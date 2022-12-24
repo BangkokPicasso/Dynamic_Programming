@@ -52,17 +52,18 @@ for t in range(T, 0, -1):
             # Dish2 = Dish[(~Dish['餐點'].isin([Dish['餐點'][I]]))].reset_index()# 濾掉重複、超出預算餐點
             # Dish2 = Dish[(~Dish['餐點'].isin([Dish['餐點'][I]])) & (Dish['價格'] <= Sn-((t-1)* MinP)-Dish['價格'][I])].reset_index()# 濾掉重複、超出預算餐點
             # # print(t + 1, S[t + 1])
-            for i in range(len(S[t + 1][I])): 
-                if len(S[t + 1][I][i]):
+            for i in range(len(S[t + 1][I])):  
+                # print(S[t + 1][I])
+                # if len(S[t + 1][I][i]):
                     # print(S[t + 1][I][i])
 
-                    Dish2 = Dish[(~Dish['餐點'].isin(S[t+1][I][i]['餐點'].split(",")))].reset_index()
-                    for a in range(0, len(Dish2)):
-                        print(S[t][I][a])
-                        S[t][I][a]['餐點'] = Dish2['餐點'][a] + "," + S[t + 1][I][i]['餐點']
-                        S[t][I][a]['整體滿意度'] = Dish2['整體滿意度'][a] + S[t + 1][I][i]['整體滿意度']
-                        S[t][I][a]['價格']  = Dish2['價格'][a] + S[t + 1][I][i]['價格']
-                        print(S[t][I][a])
+                Dish2 = Dish[(~Dish['餐點'].isin(S[t+1][I]['餐點'].split(",")))].reset_index()
+                for a in range(0, len(Dish2)):
+                    # print(S[t][I][a])
+                    S[t][I][a]['餐點'] = Dish2['餐點'][a] + "," + S[t + 1][I]['餐點']
+                    S[t][I][a]['整體滿意度'] = Dish2['整體滿意度'][a] + S[t + 1][I]['整體滿意度']
+                    S[t][I][a]['價格']  = Dish2['價格'][a] + S[t + 1][I]['價格']
+                    # print(S[t][I][a])
 
                 
 
@@ -75,10 +76,8 @@ for t in range(T, 0, -1):
                     MaxS = S[t][I][i]
             else:
                 del S[t][I][i]
-        # print1    (MaxS)
         S[t][I] = MaxS
-    # print(S[t])
-# print(S[2])            
+print(S)            
                 
 # 
             # if len(S[t][I][i]) > 1 :
@@ -150,12 +149,9 @@ for t in range(T, 0, -1):
 
 
 
-<<<<<<< HEAD
 # cSet = 300 
 # cMar = 100
 # cPen = 1600
-=======
->>>>>>> e09c3f28606fccfbc462dc3b3922f165e24b77f6
 
 
 
@@ -186,28 +182,15 @@ for t in range(T, 0, -1):
 #     minval = min(S[t].values()) #找出當期最小值 
 #     R[t] = minval # 當期最小的cost
     
-<<<<<<< HEAD
 #     for v in S[t]:
 #         if S[t][v] == minval:
 #             if t not in K:
 #                 K[t] = [v[1]]  #第t期的最佳解是X=x
 #             else:
 #                 K[t].append(v[1])
-=======
-    # for v in S[t]:
-    #     if S[t][v] == minval:
-    #         if t not in K:
-    #             K[t] = [v[1]]  #第t期的最佳解是X=x
-    #         else:
-    #             K[t].append(v[1])
->>>>>>> e09c3f28606fccfbc462dc3b3922f165e24b77f6
 # print(K)
 # print('----'*10)
 # print(R)
 # print('----'*10)
 # for i in S:
-<<<<<<< HEAD
 #     print(S[i])
-=======
-#     print(S[i])
->>>>>>> e09c3f28606fccfbc462dc3b3922f165e24b77f6
