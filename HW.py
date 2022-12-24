@@ -150,9 +150,12 @@ for t in range(T, 0, -1):
 
 
 
+<<<<<<< HEAD
 # cSet = 300 
 # cMar = 100
 # cPen = 1600
+=======
+>>>>>>> e09c3f28606fccfbc462dc3b3922f165e24b77f6
 
 
 
@@ -183,15 +186,28 @@ for t in range(T, 0, -1):
 #     minval = min(S[t].values()) #找出當期最小值 
 #     R[t] = minval # 當期最小的cost
     
+<<<<<<< HEAD
 #     for v in S[t]:
 #         if S[t][v] == minval:
 #             if t not in K:
 #                 K[t] = [v[1]]  #第t期的最佳解是X=x
 #             else:
 #                 K[t].append(v[1])
+=======
+    # for v in S[t]:
+    #     if S[t][v] == minval:
+    #         if t not in K:
+    #             K[t] = [v[1]]  #第t期的最佳解是X=x
+    #         else:
+    #             K[t].append(v[1])
+>>>>>>> e09c3f28606fccfbc462dc3b3922f165e24b77f6
 # print(K)
 # print('----'*10)
 # print(R)
 # print('----'*10)
 # for i in S:
+<<<<<<< HEAD
 #     print(S[i])
+=======
+#     print(S[i])
+>>>>>>> e09c3f28606fccfbc462dc3b3922f165e24b77f6
