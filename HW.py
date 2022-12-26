@@ -64,15 +64,20 @@ for t in range(T, 0, -1):
     else:
         for I in range(len(S[t + 1])): # 上一期的餐點組合數
             for i in range(len(S[t + 1][I])):  
-                
-                Dish2 = Dish[(~Dish['餐點'].isin(S[t+1][I]['餐點'].split(","))) & 
+                LastDish = sorted(S[t+1][I]['餐點'].split(','))
+
+                Dish2 = Dish[(~Dish['餐點'].isin(LastDish)) & 
                     (Dish['價格'] <= Sn-((t-1)* MinP)-S[t + 1][I]['價格']) & 
                     (Dish['熱量'] <= Sc-((t-1)* MinC)-S[t + 1][I]['熱量'])].reset_index()# 濾掉重複、超出預算、超出熱量餐點
                 for a in range(0, len(Dish2)): # 這一期的餐點組合數
-                    S[t][I][a]['餐點'] =  S[t + 1][I]['餐點'] + "," + Dish2['餐點'][a]
-                    S[t][I][a]['整體滿意度'] = Dish2['整體滿意度'][a] + S[t + 1][I]['整體滿意度']
-                    S[t][I][a]['價格']  = Dish2['價格'][a] + S[t + 1][I]['價格']
-                    S[t][I][a]['熱量']  = Dish2['熱量'][a] + S[t + 1][I]['熱量']
+                    ThisDish = sorted(LastDish + [Dish2['餐點'][a]])
+                    print(ThisDish)
+                    print(LastDish)
+                    if ThisDish != LastDish:
+                        S[t][I][a]['餐點'] =  S[t + 1][I]['餐點'] + "," + Dish2['餐點'][a]
+                        S[t][I][a]['整體滿意度'] = Dish2['整體滿意度'][a] + S[t + 1][I]['整體滿意度']
+                        S[t][I][a]['價格']  = Dish2['價格'][a] + S[t + 1][I]['價格']
+                        S[t][I][a]['熱量']  = Dish2['熱量'][a] + S[t + 1][I]['熱量']
 
     S[t][I] = GetMaS(S[t])
 
@@ -84,7 +89,7 @@ for t in range(T, 0, -1):
         if len(S[t][i]):
             if S[t][i]['整體滿意度'] >= MaxS['整體滿意度']:
                 MaxS = S[t][i] 
-                if S[t][i]['整體滿意度'] == MaxS['整體滿意度'] and sorted(S[t][i]['餐點'].split(',')) != sorted(MaxS['餐點'].split(',')):                  
+                if S[t][i]['整體滿意度'] == MaxS['整體滿意度']: #and sorted(S[t][i]['餐點'].split(',')) != sorted(MaxS['餐點'].split(',')):                  
                     Opt[t,Order] = MaxS  
                     Order += 1
                 else:
