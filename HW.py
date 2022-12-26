@@ -42,8 +42,7 @@ T = 7 # 總期數
 Sn = 800 # 總餐費(預算上限)
 Sc = 4000 # 總熱量(熱量上限)
 S = {} #裝各期各x下的value
-MinP = min(Dish['價格']) #每日最低預算
-MinC = min(Dish['熱量']) #每日最低熱量
+
 Dish = pd.DataFrame(Dish) # 丟進DF方便篩選
 
 for t in range(T, 0, -1): # 建立字典中的字典，每個小字典裝當期值
@@ -65,19 +64,16 @@ for t in range(T, 0, -1):
         for I in range(len(S[t + 1])): # 上一期的餐點組合數
             for i in range(len(S[t + 1][I])):  
                 LastDish = sorted(S[t+1][I]['餐點'].split(','))
-
+                Money = int(Dish[(~Dish['價格'].isin(LastDish))].sort_values(by = '價格')[['價格']][:t-1].sum()) # 最低飯錢 
+                Car = int(Dish[(~Dish['熱量'].isin(LastDish))].sort_values(by = '熱量')[['熱量']][:t-1].sum()) # 最低熱量 
                 Dish2 = Dish[(~Dish['餐點'].isin(LastDish)) & 
-                    (Dish['價格'] <= Sn-((t-1)* MinP)-S[t + 1][I]['價格']) & 
-                    (Dish['熱量'] <= Sc-((t-1)* MinC)-S[t + 1][I]['熱量'])].reset_index()# 濾掉重複、超出預算、超出熱量餐點
+                    (Dish['價格'] <= Sn - Money - S[t + 1][I]['價格']) & 
+                    (Dish['熱量'] <= Sc - Car - S[t + 1][I]['熱量'])].reset_index()# 濾掉重複、超出預算、超出熱量餐點
                 for a in range(0, len(Dish2)): # 這一期的餐點組合數
-                    ThisDish = sorted(LastDish + [Dish2['餐點'][a]])
-                    print(ThisDish)
-                    print(LastDish)
-                    if ThisDish != LastDish:
-                        S[t][I][a]['餐點'] =  S[t + 1][I]['餐點'] + "," + Dish2['餐點'][a]
-                        S[t][I][a]['整體滿意度'] = Dish2['整體滿意度'][a] + S[t + 1][I]['整體滿意度']
-                        S[t][I][a]['價格']  = Dish2['價格'][a] + S[t + 1][I]['價格']
-                        S[t][I][a]['熱量']  = Dish2['熱量'][a] + S[t + 1][I]['熱量']
+                    S[t][I][a]['餐點'] =  S[t + 1][I]['餐點'] + "," + Dish2['餐點'][a]
+                    S[t][I][a]['整體滿意度'] = Dish2['整體滿意度'][a] + S[t + 1][I]['整體滿意度']
+                    S[t][I][a]['價格']  = Dish2['價格'][a] + S[t + 1][I]['價格']
+                    S[t][I][a]['熱量']  = Dish2['熱量'][a] + S[t + 1][I]['熱量']
 
     S[t][I] = GetMaS(S[t])
 
@@ -89,7 +85,7 @@ for t in range(T, 0, -1):
         if len(S[t][i]):
             if S[t][i]['整體滿意度'] >= MaxS['整體滿意度']:
                 MaxS = S[t][i] 
-                if S[t][i]['整體滿意度'] == MaxS['整體滿意度']: #and sorted(S[t][i]['餐點'].split(',')) != sorted(MaxS['餐點'].split(',')):                  
+                if S[t][i]['整體滿意度'] == MaxS['整體滿意度'] and sorted(S[t][i]['餐點'].split(',')) != sorted(MaxS['餐點'].split(',')):                  
                     Opt[t,Order] = MaxS  
                     Order += 1
                 else:
