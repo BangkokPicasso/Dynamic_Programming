@@ -97,18 +97,19 @@ for t in range(T, 0, -1):
                         Max += [S[t][I][order]['整體滿意度']]
                         DishList += [sorted(S[t][I][order]['餐點'].split(','))]
                         order += 1
-
+    order = 1
     for I in range(len(S[t])):
         MaxS = S[t][I][0]
         for i in range(len(S[t][I])): # 找出該組合最大值
             if len(S[t][I][i]):
-                if S[t][I][i]['整體滿意度'] > MaxS['整體滿意度']:
-                    MaxS = S[t][I][i]
+                if S[t][I][i]['整體滿意度'] > MaxS['整體滿意度']: # 複數最佳解
+                    S[t][I + order] = {0 :S[t][I][i]}
+                    order += 1
             else:
                 del S[t][I][i] # 清掉多餘dict
         S[t][I] = MaxS  # 只留最大值組合
 
-# print(S)
+print(S[1])
 Opt = {} 
 for t in range(T, 0, -1):
     MaxS = S[t][0]
